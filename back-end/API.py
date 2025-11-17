@@ -1,5 +1,5 @@
 #======== IMPORTS ========
-from flask import Flask, jsonify, request # for crate the api and get the requests from clint
+from flask import Flask, jsonify, request # crating the api and get the requests from clint and response to the clint
 import requests # to send a request to any path
 from flask_cors import CORS # solve the CORS problem
 import os # to git the pahts or the file paths
@@ -7,7 +7,7 @@ import json # to make the data into json format
 from dotenv import load_dotenv # to load the tokens (secret passwords)
 
 
-#======== VARs AND FUNCTIONS ========
+#======== ENV SECTION ========
 # the path of the env file that will contain the tokens
 PATH = "back-end/.env"
 
@@ -47,20 +47,23 @@ jwt_secret_password = token[1]
 
 
 
+#======== CREATE/SAVE USER SECTION ========
+# it will access the json file (our db)
+def access_json_db(): 
+    pass
 
-#======== ROUTES ========
+# create new user and pass it to the [access_json_db()] function to save the user in the db (json file)
+def create_user():
+    pass
 
-data = {
-    "name": "ali",
-    "age": 20
-}
-
+#======== FLASK SECTION ========
 app = Flask(__name__)
 
 
+    #=== ROUTES ====
 @app.route("/")
 def  home():
-    return data
+    return "Home Page"
     
 
 if __name__ == "__main__":
