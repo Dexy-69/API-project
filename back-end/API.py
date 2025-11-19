@@ -1,71 +1,144 @@
-#======== IMPORTS ========
-from flask import Flask, jsonify, request # crating the api and get the requests from clint and response to the clint
-import requests # to send a request to any path
-from flask_cors import CORS # solve the CORS problem
-import os # to git the pahts or the file paths
-import json # to make the data into json format
-from dotenv import load_dotenv # to load the tokens (secret passwords)
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+from flask_jwt_extended import (
+    JWTManager, create_access_token,
+    set_access_cookies, jwt_required, get_jwt_identity
+)
+import json
+import os
+from dotenv import load_dotenv
+import uuid
 
 
-#======== ENV SECTION ========
-# the path of the env file that will contain the tokens
-PATH = "back-end/.env"
 
-# read or write from/on the env file
-def read_write_file(mode, message = None):
-    if mode == "w" and message:
-        with open(PATH, mode) as f:
-            f.write(message)
-            
-    elif mode == "r":
-        with open(PATH, mode) as f:
-            data = f.read()
-            return data
+#===== FUNCTINS ======
 
-# make sure the env file exist and contain the tokens
-def make_env_file():
-    if not os.path.exists(PATH): # if the env file not exist make one
-        read_write_file("w", 'WP_SECRET_PASSWORD="put ur wp secret password"\n' \
-        'JWT_SECRET_PASSWORD="put ur secret jwt password"')
-    elif os.path.exists(PATH): # if the env exist make sure there is data inside it
-        data = read_write_file("r")
-        if not data: # if there is no data write some data inside it
-            read_write_file("w", 'WP_SECRET_PASSWORD="put ur wp secret password"\n' \
-            'JWT_SECRET_PASSWORD="put ur secret jwt password"')
-            
-    # if every thing is ok then load the keys inside the env file
+# db section ======
+
+# path of the db (json)
+DB_PATH = "data.json"
+
+#create the db
+def create_db_json() -> None: 
+    """create the db (json)"""
+    if not os.path.exists(DB_PATH):
+        with open(DB_PATH, "w") as f:
+            json.dump([], f, indent=4)
+
+    with open(DB_PATH, "r") as f:
+        data = f.read()
+        if not data:
+            with open(DB_PATH, "w") as f:
+                json.dump([], f, indent=4)
+
+#get data from db
+def get_data() -> list: 
+    """get data from the db (json) and return it as list"""
+    create_db_json()
+    with open(DB_PATH, "r") as f:
+       data = json.load(f)
+    return data
+
+#add data to db
+def add_data(data) -> None: 
+    """add data to the db (json)"""
+    
+    create_db_json()
+
+    new_data = get_data()
+    new_data.append(data)
+    with open(DB_PATH, "w") as f:
+        json.dump(new_data, f, indent=4)
+
+
+# env section ======
+
+#create env
+def create_env_file() -> None:
+    """make sure there is env file and it is not empty
+    and cteate the secret key"""
+    ENV_PATH = ".env"
+
+
+    def create_secret_key():
+        s_key = str(uuid.uuid4())
+        return s_key
+
+
+    if not os.path.exists(ENV_PATH):
+        with open(ENV_PATH, "w") as f:
+            secret_key = create_secret_key()
+            f.write(f'SECRET_KEY="{secret_key}"\n \
+            WP_SECRET_PASSWORD="put ur wp secret password"')
+
+    
+    with open(ENV_PATH, "r") as f:
+        data = f.read()
+        print(data)
+        if not data:
+            with open(ENV_PATH, "w") as f:
+                secret_key = create_secret_key()
+                f.write(f'SECRET_KEY="{secret_key}"\n \
+                WP_SECRET_PASSWORD="put ur wp secret password"')
+
+
+#load secret key
+def load_secret_key() -> str:
+    """return the secret key as str"""
+    create_env_file()
     load_dotenv()
-    wp_password = os.getenv("WP_SECRET_PASSWORD")
-    jwb_password = os.getenv("JWT_SECRET_PASSWORD")
-    return wp_password, jwb_password
-
-
-token = make_env_file()
-
-wp_secret_password = token[0]
-jwt_secret_password = token[1]
+    secret_key = os.getenv("SECRET_KEY")
+    return secret_key
 
 
 
-#======== CREATE/SAVE USER SECTION ========
-# it will access the json file (our db)
-def access_json_db(): 
-    pass
 
-# create new user and pass it to the [access_json_db()] function to save the user in the db (json file)
-def create_user():
-    pass
+#===== FLASK =====
 
-#======== FLASK SECTION ========
 app = Flask(__name__)
 
+# configurations
+app.config["JWT_SECRET_KEY"] = load_secret_key()
+app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
 
-    #=== ROUTES ====
-@app.route("/")
-def  home():
-    return "Home Page"
-    
+
+CORS(app, supports_credentials=True)
+jwt = JWTManager(app)
+
+
+#==== ROUTES =====
+
+@app.post("/login")
+def login():
+    """login, need username and password so it will be post method"""
+    pass
+
+
+@app.get("/logout")
+@jwt_required()
+def logout():
+    """logout, need nothing so it will be get method"""
+    pass
+
+
+
+@app.post("/signup")
+def sign_up():
+    """signup, need username email and password so it will be post method"""
+    pass
+
+@app.get("/get_data")
+@jwt_required()
+def get_data():
+    """get data, need nothing so it will be get method"""
+    pass
+
+
+@app.post("/add_data")
+@jwt_required()
+def add_data():
+    """add data, need the data u want to add so it will be post method"""
+    pass
 
 if __name__ == "__main__":
     app.run(debug=True)
-
