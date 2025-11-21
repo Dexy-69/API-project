@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export default function Signup({ checkLogin }) {
+export default function Signup({ setLoginForm }) {
   const [un, setUn] = useState("")
   const [em, setEm] = useState("")
   const [pw, setPw] = useState("")
@@ -17,6 +17,7 @@ export default function Signup({ checkLogin }) {
 
     const data = await res.json()
     alert(data.msg)
+    setLoginForm("login")
   }
 
 

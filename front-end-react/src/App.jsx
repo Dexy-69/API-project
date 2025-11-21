@@ -22,7 +22,7 @@ export default function App() {
       const data = await res.json()
       setData(data)
       setUserLogin(true)
-    }else{
+    } else {
       setUserLogin(false)
     }
 
@@ -35,12 +35,12 @@ export default function App() {
 
   return (
     <>
-      <Header islogin={userLogin} setCurrentPage={setCurrentPage} setUserLogin={setUserLogin}/>
+      <Header islogin={userLogin} setCurrentPage={setCurrentPage} setUserLogin={setUserLogin} />
       <section>
 
 
         {userLogin === false && currentPage === "login" && <Login checkLogin={getData} />}
-        {userLogin === false && currentPage === "signup" && <Signup checkLogin={getData}/>}
+        {userLogin === false && currentPage === "signup" && <Signup setLoginForm={setCurrentPage} />}
         {userLogin && <Homepage data={data} />}
       </section>
     </>
