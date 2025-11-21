@@ -8,6 +8,10 @@
             {
                 "post_id": 1,
                 "post_title": "this is post 1"
+            },
+            {
+                "post_id": 2,
+                "post_title": "this is test post"
             }
         ]
     },
