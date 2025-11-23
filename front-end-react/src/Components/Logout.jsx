@@ -10,7 +10,7 @@ export default function Logout({ setUserLogin, serOpenMenu }) {
             }
         )
         const msg = await res.json()
-        if (msg.msg === "logput successful") {
+        if (msg.msg === "logout successful") {
             setUserLogin(false)
             serOpenMenu(false)
         }

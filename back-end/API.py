@@ -232,7 +232,7 @@ def sign_up():
     if user_Verification == Verification_code:
 
         users_db = get_data_db()
-        new_id = 0
+        new_id = 1
         if users_db:
             for user in users_db:
                 if username == user["username"] or email == user["email"]:
