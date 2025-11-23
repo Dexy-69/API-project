@@ -19,6 +19,7 @@ export default function App() {
   const [pw, setPw] = useState("")
   const [header, setHeader] = useState("Home page")
   const [showInfoCards, setShowInfoCards] = useState(true)
+  const [showAboutContent, setShowAboutContent] = useState(false) 
 
   async function getData() {
     const res = await fetch("http://127.0.0.1:5000/get_data", {
@@ -48,31 +49,36 @@ export default function App() {
       setUserLogin={setUserLogin} 
       username={data.name} 
       setHeader={setHeader}
-      setShowInfoCards={setShowInfoCards}/>
+      setShowInfoCards={setShowInfoCards}
+      setShowAboutContent={setShowAboutContent}/>
 
       <section>
+        {!data && <p>Loading...</p>}
+        {tfaShow === true && <TwoFA 
+        setUserLogin={setUserLogin}
+        setShowTfa={setTfaShow}
+        checkLogin={getData}
+        tempId={tempId} sendEmil={sendEmil}
+        un={un} em={em} pw={pw}
+        setCurrentPage={setCurrentPage} />}
 
-        {tfaShow === true && <TwoFA setUserLogin={setUserLogin}
-          setShowTfa={setTfaShow}
-          checkLogin={getData}
-          tempId={tempId} sendEmil={sendEmil}
-          un={un} em={em} pw={pw}
-          setCurrentPage={setCurrentPage} />}
-
-        {userLogin === false && currentPage === "login" && tfaShow === false && <Login setShowTfa={setTfaShow} 
-        setTempId={setTempId} setSendEmail={setSendEmail} />}
+        {userLogin === false && currentPage === "login" && tfaShow === false && <Login 
+        setShowTfa={setTfaShow} 
+        setTempId={setTempId} 
+        setSendEmail={setSendEmail} />}
 
         {userLogin === false && currentPage === "signup" && tfaShow === false && <Signup
-          setShowTfa={setTfaShow}
-          setSendEmail={setSendEmail}
-          setUn={setUn} setEm={setEm} setPw={setPw}
-          un={un} em={em} pw={pw} />}
+        setShowTfa={setTfaShow}
+        setSendEmail={setSendEmail}
+        setUn={setUn} setEm={setEm} setPw={setPw}
+        un={un} em={em} pw={pw} />}
 
         {userLogin === true && tfaShow === false && <Homepage data={data} 
         header={header} 
         setHeader={setHeader} 
         showInfoCards={showInfoCards} 
-        setShowInfoCards={setShowInfoCards}/>}
+        setShowInfoCards={setShowInfoCards}
+        showAboutContent={showAboutContent}/>}
 
       </section>
     </>

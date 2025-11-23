@@ -52,7 +52,6 @@ nav {
   transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-
 .logout,
 .home,
 .about {
@@ -107,10 +106,8 @@ nav {
 }
 
 .menu-op p {
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
 }
-
-
 
 .card-container {
   height: 100%;
@@ -190,12 +187,12 @@ input:focus {
   padding-left: 0.5em;
 }
 
-.tfa-input{
+.tfa-input {
   height: 3em;
   margin: 3em 0;
 }
 
-.tfa-form{
+.tfa-form {
   min-height: 40%;
 }
 
@@ -234,7 +231,7 @@ label {
   cursor: pointer;
 }
 
-.container{
+.container {
   height: 100%;
   width: 100%;
   display: flex;
@@ -253,11 +250,11 @@ label {
   filter: none;
 }
 
-.card-post-container{
+.card-post-container {
   background-color: #343a45;
-  padding:  0 10px;
+  padding: 0 10px;
   border: 1px solid gray;
-  border-radius: .6em;
+  border-radius: 0.6em;
   box-shadow: 1px 1px 20px rgba(255, 255, 255, 0.5);
   height: 50%;
   width: 18%;
@@ -266,19 +263,69 @@ label {
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out,
+    filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
 }
 
-.card-post-container:hover{
+.card-post-container:hover {
   transform: scale(1.12);
   box-shadow: 1px 1px 30px rgba(255, 255, 255, 0.5);
 }
 
-.card-post-container h3{
+.card-post-container h3 {
   margin: 1.5em 0;
 }
 
-.card-post-container p{
+.card-post-container p {
   margin-bottom: 10em;
+}
 
+.about-container {
+  width: 100%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+}
+
+.about-container p,
+h3 {
+  line-height: 2;
+  display: flex;
+  justify-content: start;
+  width: 50%;
+}
+
+.about-container h3 {
+  margin: 3.8em 0 1em 0;
+}
+.techniques-contianer {
+  width: 50%;
+  height: 15%;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+}
+
+.react-img,
+.python-img {
+  height: 100%;
+}
+
+.python-card,
+.react-card {
+  height: 100%;
+  border: 1px solid gray;
+  border-radius: 10px;
+  box-shadow: 1px 1px 20px rgba(255, 255, 255, 0.5);
+  margin: 1.4em;
+  padding: 0.5em;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.python-card:hover,
+.react-card:hover {
+  transform: scale(1.15);
+  box-shadow: 1px 1px 30px rgba(255, 255, 255, 0.5);
 }
