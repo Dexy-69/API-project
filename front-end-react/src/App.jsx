@@ -17,6 +17,8 @@ export default function App() {
   const [un, setUn] = useState("")
   const [em, setEm] = useState("")
   const [pw, setPw] = useState("")
+  const [header, setHeader] = useState("Home page")
+  const [showInfoCards, setShowInfoCards] = useState(true)
 
   async function getData() {
     const res = await fetch("http://127.0.0.1:5000/get_data", {
@@ -44,7 +46,9 @@ export default function App() {
       <Header islogin={userLogin} 
       setCurrentPage={setCurrentPage} 
       setUserLogin={setUserLogin} 
-      username={data.name} />
+      username={data.name} 
+      setHeader={setHeader}
+      setShowInfoCards={setShowInfoCards}/>
 
       <section>
 
@@ -64,7 +68,11 @@ export default function App() {
           setUn={setUn} setEm={setEm} setPw={setPw}
           un={un} em={em} pw={pw} />}
 
-        {userLogin === true && tfaShow === false && <Homepage data={data} />}
+        {userLogin === true && tfaShow === false && <Homepage data={data} 
+        header={header} 
+        setHeader={setHeader} 
+        showInfoCards={showInfoCards} 
+        setShowInfoCards={setShowInfoCards}/>}
 
       </section>
     </>

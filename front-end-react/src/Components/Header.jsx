@@ -5,10 +5,10 @@ import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { useState } from 'react'
 
 
-function MenuOp({ setUserLogin, username, serOpenMenu }) {
+function MenuOp({ setUserLogin, username, serOpenMenu, setHeader, setShowInfoCards }) {
   return (<div className='menu-op'>
     <p>{username}</p>
-    <button className="navBtn home">Home</button>
+    <button className="navBtn home" onClick={() => { setHeader("Home page"); setShowInfoCards(true) }}>Home</button>
     <button className="navBtn about">About</button>
     <Logout setUserLogin={setUserLogin} serOpenMenu={serOpenMenu} />
 
@@ -16,7 +16,7 @@ function MenuOp({ setUserLogin, username, serOpenMenu }) {
 }
 
 
-export default function Header({ islogin, setCurrentPage, setUserLogin, username }) {
+export default function Header({ islogin, setCurrentPage, setUserLogin, username, setHeader, setShowInfoCards }) {
   const [openMenu, setOpenMenu] = useState(false)
 
   let contetn = "";
@@ -24,7 +24,7 @@ export default function Header({ islogin, setCurrentPage, setUserLogin, username
   if (islogin === true) {
     contetn = <>
       <FontAwesomeIcon icon={faUser} className='user-icon' onClick={() => { openMenu === false ? setOpenMenu(true) : setOpenMenu(false) }} />
-      {openMenu === true && <MenuOp setUserLogin={setUserLogin} username={username} serOpenMenu={setOpenMenu} />}
+      {openMenu === true && <MenuOp setUserLogin={setUserLogin} username={username} serOpenMenu={setOpenMenu} setHeader={setHeader} setShowInfoCards={setShowInfoCards} />}
 
     </>
   } else if (islogin === false) {
