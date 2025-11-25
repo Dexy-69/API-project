@@ -11,6 +11,7 @@ import uuid
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from wpRequest import WP_REQUSET
 
 
 
@@ -238,17 +239,14 @@ def sign_up():
                 if username == user["username"] or email == user["email"]:
                     return jsonify({"msg": "user exist"})
             new_id = len(users_db) + 1
-        
+        post = WP_REQUSET()
         new_data = {
             "id": new_id,
             "username": username,
             "email": email,
             "password": password,
             "post": [
-                {
-                "post_id": 1,
-                "post_title": "this is post 1"
-                }
+                post.get_from_wp()
             ]
         }
         add_data_db(new_data)
