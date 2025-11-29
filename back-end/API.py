@@ -260,7 +260,10 @@ def get_data():
     db_users = get_data_db()
     for user in db_users:
         if int(id) == user["id"]:
-            wp = WP_REQUSET()
+            load_dotenv()
+            username = os.getenv("USERNAME")
+            application_password = os.getenv("WP_SECRET_PASSWORD")
+            wp = WP_REQUSET(username, application_password)
             post = wp.get_posts(user["post_ids"])
             return jsonify({"name": user["username"],"post": post})
         

@@ -2,7 +2,11 @@ import requests
 import json
 
 class WP_REQUSET:
-    
+    def __init__(self, username, application_password):
+        self.username = username
+        self.application_password = application_password
+
+
     def get_posts(self, post_ids: list) -> list:
         """Using this method will return every post you create by passing the id of the post"""
         list_post = []
@@ -30,8 +34,7 @@ class WP_REQUSET:
         """Using this method will create posts by passing some values and it will return the id of the post
         you create"""
        
-        usrename = ""
-        app_key = ""
+        
 
         # if there is img 
         if not img:
@@ -41,7 +44,7 @@ class WP_REQUSET:
                 "content": content,
                 "status": status
             }
-            res = requests.post(url, json=data, auth=(usrename, app_key))
+            res = requests.post(url, json=data, auth=(self.username, self.application_password))
             if res.status_code == 201:
                 wp_res = res.json()
                 return wp_res.get("id")
