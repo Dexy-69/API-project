@@ -3,11 +3,12 @@ import InfoCard from "./InfoCard"
 import PostCard from "./postCard"
 import About from "./About"
 import AddPostContainer from "./AddPostContainer"
+import { useState } from "react"
 
 
 
 export default function Homepage({ data , header, setHeader, showInfoCards, setShowInfoCards, showAboutContent}) {
-    
+       const [showAddPost, setShowAddPost] =  useState(false)
     return (
         <>
             <h1 className="homePage">{header}</h1>

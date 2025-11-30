@@ -432,10 +432,8 @@ div {
 ::-webkit-scrollbar-thumb {
   background: gray;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(255,255,255,0.2);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
-
-
 
 .post {
   display: flex;
