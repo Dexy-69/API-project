@@ -15,13 +15,12 @@ export default function InfoCard({ setHeader, setShowInfoCards }) {
                     <button className="navBtn" onClick={() => { setHeader("Show posts"); setShowInfoCards(false) }}>Show</button>
                 </div>
                 <div className="add-post card-post-container">
-                    <h3>Add post</h3>
+                    <h3>Add post / user</h3>
                     <p>Here you can add edit and delete posts</p>
-                    <button className="navBtn" onClick={() => { setHeader("Add post"); setShowInfoCards(false) }}>Add</button>
+                    <button className="navBtn" onClick={() => { setHeader("Add post / user"); setShowInfoCards(false) }}>Add</button>
                 </div>
 
             </div>
-
 
         </>
     )

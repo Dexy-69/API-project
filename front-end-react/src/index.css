@@ -162,7 +162,7 @@ form {
   border-radius: 1em;
   width: 25%;
   display: flex;
-  min-height: 63%;
+  min-height: 70%;
   box-shadow: 1px 1px 20px rgba(255, 255, 255, 0.5);
 }
 
@@ -240,6 +240,11 @@ label {
   border: none;
   color: #d1d5db;
   cursor: pointer;
+  margin-bottom: 2em;
+}
+
+.loading-icon {
+  width: 18%;
 }
 
 .container {
@@ -251,7 +256,7 @@ label {
   justify-content: center;
 }
 
-.addPostContainer{
+.addPostContainer {
   flex-direction: column;
   align-items: center;
 }
@@ -415,7 +420,7 @@ div {
   box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.5);
   height: 70%;
   min-width: 25%;
-  margin: 4% 2em 0 2em;
+  margin: 2% 2em 0 2em;
   display: flex;
   flex-direction: column;
 }
@@ -429,7 +434,7 @@ div {
   padding: 1.5em 14px;
   border: 1px solid gray;
   border-radius: 0.4em;
-  margin-bottom: 2em;
+  margin-bottom: 4em;
   box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.5),
     0 0 10px rgba(0, 0, 0, 0.3);
   overflow-y: auto;
@@ -463,7 +468,7 @@ div {
     0 0 10px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease-in-out;
 }
-.post-text-contanier{
+.post-text-contanier {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -471,7 +476,7 @@ div {
   margin: 0;
 }
 
-.text-email{
+.text-email {
   color: gray;
 }
 
@@ -506,7 +511,7 @@ div {
   backdrop-filter: blur(10px);
   color: #d1d5db;
   padding: 1.2em;
-  margin-top: 6%;
+  margin-top: 8%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -573,21 +578,22 @@ textarea {
   cursor: pointer;
 }
 
-
-.select-container{
-  width: 50%;
+.select-container {
+  width: 35%;
   display: flex;
   justify-content: end;
   margin: 0;
 }
 
-.select{
+.select {
   color: white;
   background-color: #282c34;
+  font-size: 20px;
   border: none;
 }
 
-.select:focus, .select:hover{
+.select:focus,
+.select:hover {
   outline: none;
   cursor: pointer;
 }

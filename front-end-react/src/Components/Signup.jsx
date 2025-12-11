@@ -1,8 +1,10 @@
 import { useState } from "react"
+import LoadingIcon from "./LoadingIcon"
 
 export default function Signup({ setShowTfa, setSendEmail, setUn, setEm, setPw, un, em, pw }) {
 
   const [showPw, setShowPw] = useState("password")
+  const [showLoadingIcon, setShowLoadingIcon] = useState(false)
 
 
   async function checkEmail(email) {
@@ -10,6 +12,7 @@ export default function Signup({ setShowTfa, setSendEmail, setUn, setEm, setPw, 
       alert("Entrys should not be empty")
       return
     }
+    setShowLoadingIcon(true)
     const res = await fetch("http://127.0.0.1:5000/tfa_signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -18,8 +21,9 @@ export default function Signup({ setShowTfa, setSendEmail, setUn, setEm, setPw, 
     })
 
     const data = await res.json()
+
     if (data.msg === "Verification code has been sent") {
-      alert(data.msg)
+
       setSendEmail(true)
       setShowTfa(true)
     }
@@ -49,6 +53,7 @@ export default function Signup({ setShowTfa, setSendEmail, setUn, setEm, setPw, 
 
         </div>
         <button type="submit" className="login-btn">Submit</button>
+        {showLoadingIcon === true && <LoadingIcon />}
       </form>
     </>
   )

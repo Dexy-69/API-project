@@ -1,15 +1,15 @@
 
 import { useState } from "react";
-export default function AddPostContainer({ data, setShowAddPost }) {
+export default function AddPostContainer({ data, setShowAddPost, setOpValue, opValue }) {
 
-    const [opValue, setOpValue] = useState("post");
+
     const [titleOrName, setTitleOrName] = useState("title")
     const [postIdOrUserId, setPostIdOrUserId] = useState("post_id")
     return (
         <>
             <div className="container addPostContainer">
                 <div className="select-container">
-                    <select className="select" value={opValue} onChange={(e) => {
+                    <select className="select" title="You can choose if you want to edit user or post." value={opValue} onChange={(e) => {
                         const val = e.target.value;
                         setOpValue(val);
 

@@ -247,6 +247,9 @@ def sign_up():
             "password": password,
             "post": [
                 
+            ],
+            "user": [
+                
             ]
         }
         add_data_db(new_data)
@@ -258,7 +261,7 @@ def sign_up():
 def get_data():
     """get data, need nothing so it will be get method"""
     id = get_jwt_identity()
-
+    print(id)
     db_users = get_data_db()
     for user in db_users:
         if int(id) == user["id"]:
