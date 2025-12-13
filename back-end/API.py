@@ -271,43 +271,82 @@ def get_data():
     return jsonify({"msg": "no data found"})
 
 
-@app.post("/add_data")
+@app.post("/add_post")
 @jwt_required()
-def add_data_json():
-    """add data, need the data u want to add so it will be post method"""
+def add_post():
+    """add post, need the data u want to add so it will be post method"""
     #{"title": "abc", "content": "abc", "status": "publish"}
     data = request.form.get("json")
     json_data = json.loads(data)
     img = request.files.get("img")
     user_id = get_jwt_identity()
     
-    if not img:
-        title = json_data.get("title")
-        content = json_data.get("content")
-        status = json_data.get("status")
 
-        load_dotenv()
-        username = os.getenv("WP_USERNAME")
-
-        app_password = os.getenv("WP_SECRET_PASSWORD")
-        wp = WP_REQUSET(username, app_password)
-        new_post = wp.add_post(title, content, status)
-
-        if new_post:
-            data_db = get_data_db()
-
-            for user in data_db:
-                if user["id"] == int(user_id):
-                    user["post"].append(new_post)
-                    
-            with open(DB_PATH, "w") as f:
-                json.dump(data_db, f, indent=4)
-                    
-                    
-            return jsonify({"msg": "post added"})
-        
-        return jsonify({"msg": "Something went wrong"})
-
+    title = json_data.get("title")
+    content = json_data.get("content")
+    status = json_data.get("status")
+    load_dotenv()
+    username = os.getenv("WP_USERNAME")
+    app_password = os.getenv("WP_SECRET_PASSWORD")
+    wp = WP_REQUSET(username, app_password)
+    new_post = wp.add_post(title, content, status=status, img=img)
+    if new_post:
+        data_db = get_data_db()
+        for user in data_db:
+            if user["id"] == int(user_id):
+                user["post"].append(new_post)
+                
+        with open(DB_PATH, "w") as f:
+            json.dump(data_db, f, indent=4)
+                
+                
+        return jsonify({"msg": "post added"})
     
+    return jsonify({"msg": "Something went wrong"})
+
+@app.delete("/delete_post")
+@jwt_required()
+def delete_post():
+    data = request.get_json()
+    post_id_to_del = data.get("postIdWatnToDel")
+    user_id = get_jwt_identity()
+
+    load_dotenv()
+    username = os.getenv("WP_USERNAME")
+    app_password = os.getenv("WP_SECRET_PASSWORD")
+    wp = WP_REQUSET(username, app_password)
+    del_res = wp.del_post(post_id_to_del)
+
+    deleted_post_id = del_res[0]
+    status = del_res[1]
+
+    if status == "trash":
+        data_db = get_data_db()
+        post_deleted_locally = False
+
+        for user in data_db:
+            if user["id"] == int(user_id):
+                for post in user["post"]:
+                    if post["post_id"] == deleted_post_id:
+                        user["post"].remove(post)
+                        post_deleted_locally = True
+                        break
+                if post_deleted_locally:
+                    break
+        with open(DB_PATH, "w") as f:
+            json.dump(data_db, f, indent=4)
+
+        return jsonify({"msg": "Post deleted successfully."}), 200              
+        
+    return jsonify({"msg": "Failed to delete post from WordPress."}), 400
+    
+@app.post("/add_user")
+@jwt_required()
+def add_user():
+    """using this end point will let u create user in wp and
+      at the same time it will save data of this user in the db (json db)"""
+    pass
+
+
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faX } from '@fortawesome/free-solid-svg-icons'
 import { useState } from 'react'
+import LoadingIcon from './LoadingIcon'
 
 
 export default function AddPostInfo({ setShowAddPost, refresh, opValue }) {
@@ -8,26 +9,29 @@ export default function AddPostInfo({ setShowAddPost, refresh, opValue }) {
   const [file, setFile] = useState("")
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
-  const [publish, setPublish] = useState("private")
+  const [status, setStatus] = useState("private")
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPw, setShowPw] = useState("password")
+  const [showLoadingIcon, setShowLoadingIcon] = useState(false)
 
   async function handelPost() {
     // here it will handel post u will able to create delete posts
     const formData = new FormData();
 
     const jsonData = {
-      title: title,
-      content: content,
-      publish: publish
+      title,
+      content,
+      status
     }
+
+
 
     formData.append("img", file)
     formData.append("json", JSON.stringify(jsonData))
-
-    const res = await fetch("http://127.0.0.1:5000/add_data",
+    setShowLoadingIcon(true)
+    const res = await fetch("http://127.0.0.1:5000/add_post",
       {
         method: "POST",
         credentials: "include",
@@ -36,7 +40,9 @@ export default function AddPostInfo({ setShowAddPost, refresh, opValue }) {
     )
 
     const data = await res.json()
+
     if (data.msg === "post added") {
+      setShowLoadingIcon(false)
       refresh()
       setShowAddPost(false)
     }
@@ -81,9 +87,10 @@ export default function AddPostInfo({ setShowAddPost, refresh, opValue }) {
           </label>
 
           <div className='Publish'>
-            <input type="checkbox" onChange={(e) => { setPublish(e.target.checked ? "publish" : "private") }} />
+            <input type="checkbox" onChange={(e) => { setStatus(e.target.checked ? "publish" : "private") }} />
             <p>Publish?</p>
           </div>
+          {showLoadingIcon === true && <LoadingIcon />}
           <button className='navBtn add' onClick={() => handelPost()}>Add</button>
         </div>
 

@@ -7,9 +7,9 @@ class WP_REQUSET:
         self.application_password = application_password
 
     
-    def add_post(self, title:str, content:str, img:str = None, status:str = "private") -> int:
-        """Using this method will create posts by passing some values and it will return the id of the post
-        you create"""
+    def add_post(self, title:str, content:str, img:str = None, status:str = None) -> dict:
+        """Using this method will create posts by passing some values and it will 
+        return dict with some data of the post like (id, time post created, title post, content, link of the post...)"""
        
         # if there is img 
         if not img:
@@ -32,7 +32,31 @@ class WP_REQUSET:
                 }
                 return post
 
-            else:
-                print("error", res.status_code, res.text)
+            if img:
+                # if there
+                pass
 
-        
+            print("error", res.status_code, res.text)
+
+    def del_post(self, post_id: int) -> list:
+        """using this method will let u delete any post with it's id and it will return
+         list with id and status of the post was deleted"""
+        url = f"http://localhost/wordpress/wp-json/wp/v2/posts/{post_id}"
+        res = requests.delete(
+            url,
+            auth=(self.username, self.application_password)
+        )
+        if res.status_code == 200:
+            del_res = res.json()
+            psot_id_deleted = del_res.get("id")
+            status = del_res.get("status")
+
+            list_to_del_the_post_from_json_db = [psot_id_deleted, status]
+
+            if status == "trash":
+                return list_to_del_the_post_from_json_db
+                
+    def add_user(self) -> dict:
+        """using this method will let u create user and it will
+          return some data of the user was created as dict"""
+        pass

@@ -16,7 +16,7 @@ export default function Homepage({ data, header, setHeader, showInfoCards, setSh
             <h1 className="homePage">{header}</h1>
             {header === "Show posts" && <PostCard data={data} />}
             {showAddPost === true && <AddPostInfo setShowAddPost={setShowAddPost} refresh={refresh} opValue={opValue} />}
-            {header === "Add post / user" && <AddPostContainer data={data} setShowAddPost={setShowAddPost} opValue={opValue} setOpValue={setOpValue} />}
+            {header === "Add post / user" && <AddPostContainer data={data} setShowAddPost={setShowAddPost} opValue={opValue} setOpValue={setOpValue} refresh={refresh}/>}
             {showInfoCards === true && <InfoCard setHeader={setHeader} setShowInfoCards={setShowInfoCards} />}
             {showAboutContent === true && <About />}
         </>
