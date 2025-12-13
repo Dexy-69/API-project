@@ -248,7 +248,7 @@ def sign_up():
             "post": [
                 
             ],
-            "user": [
+            "users": [
                 
             ]
         }
@@ -261,12 +261,12 @@ def sign_up():
 def get_data():
     """get data, need nothing so it will be get method"""
     id = get_jwt_identity()
-    print(id)
+    
     db_users = get_data_db()
     for user in db_users:
         if int(id) == user["id"]:
             
-            return jsonify({"name": user["username"],"post": user["post"], "user": user["user"]})
+            return jsonify({"name": user["username"],"post": user["post"], "user": user["users"]})
         
     return jsonify({"msg": "no data found"})
 
@@ -295,7 +295,7 @@ def add_post():
         for user in data_db:
             if user["id"] == int(user_id):
                 user["post"].append(new_post)
-                
+                break
         with open(DB_PATH, "w") as f:
             json.dump(data_db, f, indent=4)
                 
@@ -340,12 +340,82 @@ def delete_post():
         
     return jsonify({"msg": "Failed to delete post from WordPress."}), 400
     
+
 @app.post("/add_user")
 @jwt_required()
 def add_user():
     """using this end point will let u create user in wp and
       at the same time it will save data of this user in the db (json db)"""
-    pass
+    user_id = get_jwt_identity()
+
+    new_user_data = request.get_json()
+    #{"wpUsername": "ali", wpEmail: "abc@gmail.com", "wpPassword": "123"}
+    wp_username = new_user_data.get("wpUsername")
+    wp_email = new_user_data.get("wpEmail")
+    wp_password = new_user_data.get("wpPassword")
+
+    load_dotenv()
+    username = os.getenv("WP_USERNAME")
+    app_password = os.getenv("WP_SECRET_PASSWORD")
+
+    wp = WP_REQUSET(username, app_password)
+    add_user_res = wp.add_user(wp_username, wp_email, wp_password)
+    if not add_user_res == "Sorry, that username already exists!":
+        data_db = get_data_db()
+        for user in data_db:
+            if user["id"] == int(user_id):
+                user["users"].append(add_user_res)
+                break
+        with open(DB_PATH, "w") as f:
+            json.dump(data_db, f, indent=4)
+    return jsonify({"msg": add_user_res})
+
+
+@app.delete("/delete_user")
+@jwt_required()
+def delete_user():
+    """using this end point will let u delete user from wordpress by the id of this user"""
+    user_id = get_jwt_identity()
+
+    # {"userIdWantTodel": 1}
+    data = request.get_json()
+    id_user_to_del = data.get("userIdWantTodel")
+    
+    
+
+    load_dotenv()
+    username = os.getenv("WP_USERNAME")
+    app_password = os.getenv("WP_SECRET_PASSWORD")
+
+    wp = WP_REQUSET(username, app_password)
+    del_res = wp.del_user(id_user_to_del)
+
+   
+    if del_res == True:
+
+        data_db = get_data_db()
+        user_deleted_locally = False
+
+        for user in data_db:
+            if user["id"] == int(user_id):
+                for u in user["users"]:
+ 
+                    if u["user_id"] == int(id_user_to_del):
+                        user["users"].remove(u)
+                        user_deleted_locally = True
+  
+                if user_deleted_locally == True:
+                    break
+        with open(DB_PATH, "w") as f:
+            json.dump(data_db, f, indent=4)       
+        
+
+        return jsonify({"msg": "User deleted successfully"})
+
+    return jsonify({"msg": del_res})
+
+
+    
 
 
 if __name__ == "__main__":

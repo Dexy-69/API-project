@@ -10,14 +10,18 @@ export default function AddPostInfo({ setShowAddPost, refresh, opValue }) {
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
   const [status, setStatus] = useState("private")
-  const [username, setUsername] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [wpUsername, setWpUsername] = useState("")
+  const [wpEmail, setWpEmail] = useState("")
+  const [wpPassword, setWpPassword] = useState("")
   const [showPw, setShowPw] = useState("password")
   const [showLoadingIcon, setShowLoadingIcon] = useState(false)
 
   async function handelPost() {
     // here it will handel post u will able to create delete posts
+    if (title === "" || content === "") {
+      alert("Title or Content can't be ampty")
+      return
+    }
     const formData = new FormData();
 
     const jsonData = {
@@ -51,15 +55,27 @@ export default function AddPostInfo({ setShowAddPost, refresh, opValue }) {
 
   async function handelUser() {
     // here handel users u can create delete users
-    const res = await fetch("", {
+    if (wpUsername === "" || wpEmail === "" || wpPassword === "") {
+      alert("Entrys should not be empty")
+      return
+    }
+    setShowLoadingIcon(true)
+    const res = await fetch("http://127.0.0.1:5000/add_user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ username, email, password })
+      body: JSON.stringify({ wpUsername, wpEmail, wpPassword })
     })
 
     const data = await res.json()
-    console.log(data)
+    if (data.msg !== "Sorry, that username already exists!") {
+      setShowLoadingIcon(false)
+      refresh()
+      setShowAddPost(false)
+    } else {
+      alert(data.msg)
+      setShowLoadingIcon(false)
+    }
   }
 
   if (opValue === "post") {
@@ -104,14 +120,15 @@ export default function AddPostInfo({ setShowAddPost, refresh, opValue }) {
         <div className='add-post-frame'>
           <div className='clos-add-post-info'><FontAwesomeIcon icon={faX} id='x' onClick={() => { setShowAddPost(false) }} /></div>
 
-          <input type="text" placeholder='Enter username' className='post-title' onChange={(e) => { setUsername(e.target.value) }} />
-          <input type="email" placeholder='Enter email' className='post-title' onChange={(e) => { setEmail(e.target.value) }} />
-          <input type={showPw} placeholder='Enter password' className='post-title' onChange={(e) => { setPassword(e.target.value) }} />
-          <div className="showPw">
+          <input type="text" placeholder='Enter username' className='post-title' onChange={(e) => { setWpUsername(e.target.value) }} />
+          <input type="email" placeholder='Enter email' className='post-title' onChange={(e) => { setWpEmail(e.target.value) }} />
+          <input type={showPw} placeholder='Enter password' className='post-title' onChange={(e) => { setWpPassword(e.target.value) }} />
+          <div className="showPw show-pw-new-user">
             <input type="checkbox" className="chack" onChange={() => showPw === "password" ? setShowPw("text") : setShowPw("password")} />
             <p>Show password</p>
 
           </div>
+          {showLoadingIcon === true && <LoadingIcon />}
           <button className='navBtn add' onClick={() => handelUser()}>Add</button>
         </div>
 

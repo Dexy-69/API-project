@@ -26,6 +26,21 @@ export default function AddPostContainer({ data, setShowAddPost, setOpValue, opV
         }
     }
 
+    async function handelDelUser(userIdWantTodel) {
+        setShowLoadingIcon(true)
+        const res = await fetch("http://127.0.0.1:5000/delete_user", {
+            method: "DELETE",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userIdWantTodel })
+        })
+        const data = await res.json()
+        if (data.msg === "User deleted successfully") {
+            setShowLoadingIcon(false)
+            refresh()
+        }
+    }
+
 
     return (
         <>
@@ -39,7 +54,7 @@ export default function AddPostContainer({ data, setShowAddPost, setOpValue, opV
                             setTitleOrName("title");
                             setPostIdOrUserId("post_id");
                         } else {
-                            setTitleOrName("user_name");
+                            setTitleOrName("username");
                             setPostIdOrUserId("user_id");
                         }
                     }} >
@@ -59,9 +74,14 @@ export default function AddPostContainer({ data, setShowAddPost, setOpValue, opV
                                         {opValue === "user" && (<p className="text-email">{el.email}</p>)}
                                     </div>
                                     <button className="delBtn" onClick={(e) => {
-                                        const postIdToDel = e.target.closest("[id]").id;
+                                        if (opValue === "post") {
+                                            const postIdToDel = e.target.closest("[id]").id;
+                                            handelDeletPost(postIdToDel)
+                                        } else {
+                                            const userIdToDel = e.target.closest("[id]").id
+                                            handelDelUser(userIdToDel)
+                                        }
 
-                                        handelDeletPost(postIdToDel)
                                     }}>Delete</button>
 
                                 </div>

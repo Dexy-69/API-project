@@ -221,8 +221,17 @@ label {
 .showPw {
   display: flex;
   align-items: center;
+  justify-content: start;
   width: 75%;
   margin: 0;
+}
+.show-pw-new-user {
+  width: 100%;
+  margin: 1em 0;
+}
+
+.show-pw-new-user p {
+  margin-left: 0.5em;
 }
 
 .chack {
@@ -599,7 +608,7 @@ textarea {
   cursor: pointer;
 }
 
-.loading-contanier{
+.loading-contanier {
   display: flex;
   justify-content: center;
   margin: 0;

@@ -56,7 +56,48 @@ class WP_REQUSET:
             if status == "trash":
                 return list_to_del_the_post_from_json_db
                 
-    def add_user(self) -> dict:
+    def add_user(self, wp_username, wp_email, wp_password) -> dict:
         """using this method will let u create user and it will
           return some data of the user was created as dict"""
-        pass
+        
+        url = "http://localhost/wordpress/wp-json/wp/v2/users"
+
+        new_user_in_wp = {
+            "username": wp_username,
+            "email": wp_email,
+            "password": wp_password
+        }
+
+        res = requests.post(
+            url,
+            auth=(self.username, self.application_password),
+            json=new_user_in_wp
+            )
+        
+        data = res.json()
+        if not data.get("message"):
+            new_user_will_added_to_the_db = {
+                "user_id": data.get("id"),
+                "username": data.get("username"),
+                "email": data.get("email"),
+                "password": wp_password
+            }
+            return new_user_will_added_to_the_db
+        return data.get("message")
+
+    def del_user(self, user_id) -> bool:
+        """using this method will let u delete user by the id of this user and
+        it will return True if the user deleted"""
+
+        url = f"http://localhost/wordpress/wp-json/wp/v2/users/{user_id}?reassign=1&force=true"
+        
+    
+
+        res = requests.delete(url,
+                               auth=(self.username, self.application_password)
+                               )
+
+        
+        data = res.json()
+        return data.get("deleted")
+        
