@@ -108,7 +108,7 @@ def two_factor_authentication() -> str:
 
     list_num = [i for i in range(0, 10)]
     digits = [] 
-    for _ in range(6):
+    for _ in range(2):
         num = str(random.choice(list_num))
         digits.append(num) 
         
