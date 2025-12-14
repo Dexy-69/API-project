@@ -37,7 +37,7 @@ def create_db_json() -> None:
         if not data:
             with open(DB_PATH, "w") as f:
                 json.dump([], f, indent=4)
-
+create_db_json()
 #get data from db
 def get_data_db() -> list: 
     """get data from the db (json) and return it as list"""
